@@ -26,8 +26,6 @@ class CardGame(QWidget):
         super().__init__(parent)
 
         self.line = 6
-        self.number_count = 0
-        #print(self.card.board)
 
         self.mainLayout = QGridLayout()
         self.setLayout(self.mainLayout)
@@ -66,9 +64,14 @@ class CardGame(QWidget):
             self.line = 7
             self.newStart()
 
+
     def cardButton(self):#card버튼을 만들어서 card가 클릭되면 이벤트가 실행되도록 한다.
+        self.number_count = 0
         self.card = Card(self.line)
         #print(self.card.board)
+
+        for x in range(self.line):
+            print(self.card.board[x])
 
         for x in range(self.line):
             for y in range(self.line):
@@ -77,6 +80,7 @@ class CardGame(QWidget):
                 elif x != self.line-1 and y != self.line-1: #가로끝, 세로끝이 '아닌' 경우에는 리스트의 index를 포함한 card이름을 새롭게 설정
                     self.card.board[x][y] = Button(str(self.card.board[x][y]), self.buttonClicked)
                     self.card.board[x][y].setText("card"+ str(x) + str(y))
+
         self.cardLayout = QGridLayout()
 
         # 각각의 위치(리스트 index에 해당하는 위치)에 card버튼이 들어가도록 한다.
