@@ -11,9 +11,7 @@ class Card:
         for i in range(line -1):
             x_num = 0
             for j in range(line-1):
-                if x_num > 4: #한 줄에 x가 4개 이상이 되지 않도록 한다
-                    break
-                if random.random()< 0.3:#x카드일 확률은 3/10으로 한다
+                if x_num <5 and random.random() < 0.3: #한 줄에 x가 4개 이상이 되지 않도록 한다, x카드일 확률은 3/10으로 한다
                     self.board[i][j] = 'x'
                     x_num += 1
 
