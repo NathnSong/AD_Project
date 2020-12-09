@@ -56,22 +56,16 @@ class CardGame(QWidget):
         keyline = self.keyCombo.currentText()
         if keyline == "4*4":
             self.line = 5
-            self.newStart()
         elif keyline == "5*5":
             self.line = 6
-            self.newStart()
         elif keyline == "6*6":
             self.line = 7
-            self.newStart()
+        self.newStart()
 
 
     def cardButton(self):#card버튼을 만들어서 card가 클릭되면 이벤트가 실행되도록 한다.
         self.number_count = 0
         self.card = Card(self.line)
-        #print(self.card.board)
-
-        for x in range(self.line):
-            print(self.card.board[x])
 
         for x in range(self.line):
             for y in range(self.line):
