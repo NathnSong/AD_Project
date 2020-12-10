@@ -1,9 +1,7 @@
 #20203084 송나단
 
-from PyQt5.QtWidgets import QApplication, QWidget
-from PyQt5.QtWidgets import QToolButton, QComboBox
-from PyQt5.QtWidgets import QSizePolicy, QPushButton
-from PyQt5.QtWidgets import QGridLayout, QMessageBox
+from PyQt5.QtWidgets import (QApplication, QWidget, QToolButton, QComboBox, QSizePolicy, QPushButton
+                            ,QGridLayout, QMessageBox)
 from card import Card
 
 class Button(QToolButton):#버튼을 만드는 class를 만든다.
@@ -30,27 +28,24 @@ class CardGame(QWidget):
         self.mainLayout = QGridLayout()
         self.setLayout(self.mainLayout)
         self.setWindowTitle('X카드 뒤집기')#윈도우 창의 Title을 설정한다.
-
         self.newgameButton = QToolButton()#newgame버튼을 만든다 -> 누르면 새로운 게임을 시작할 수 있도록
         self.newgameButton.setText('New Game')
         self.newgameButton.clicked.connect(self.newStart)
-        self.newStart()
         self.mainLayout.addWidget(self.newgameButton, 0, 0)
         self.ChangeButton()
+        self.newStart()
 
     def ChangeButton(self):
 
-        self.changeLayout = QGridLayout()
         self.keyCombo = QComboBox(self)
         self.keyCombo.addItem("4*4")
         self.keyCombo.addItem("5*5")
         self.keyCombo.addItem("6*6")
 
-        self.changeLayout.addWidget(self.keyCombo, 0,0)
+        self.mainLayout.addWidget(self.keyCombo, 0,1)
         self.changeButton = QPushButton("Change", self)
         self.changeButton.clicked.connect(self.changeButtonClicked)
-        self.changeLayout.addWidget(self.changeButton, 0,1)
-        self.mainLayout.addLayout(self.changeLayout, 0, 1)
+        self.mainLayout.addWidget(self.changeButton, 0,2)
 
     def changeButtonClicked(self):
         keyline = self.keyCombo.currentText()
@@ -62,33 +57,27 @@ class CardGame(QWidget):
             self.line = 7
         self.newStart()
 
-
     def cardButton(self):#card버튼을 만들어서 card가 클릭되면 이벤트가 실행되도록 한다.
         self.number_count = 0
         self.card = Card(self.line)
 
-        for i in range(self.line):
-            print(self.card.board[i])
+        #for i in range(self.line):
+            #print(self.card.board[i])
+
+        self.cardLayout = QGridLayout()
 
         for x in range(self.line):
             for y in range(self.line):
                 self.card.board[x][y] = Button(str(self.card.board[x][y]), self.buttonClicked)
                 if x != self.line-1 and y != self.line-1: #가로끝, 세로끝이 '아닌' 경우에는 리스트의 index를 포함한 card이름을 새롭게 설정
                     self.card.board[x][y].setText("card"+ str(x) + str(y))
-
-        self.cardLayout = QGridLayout()
-
-        # 각각의 위치(리스트 index에 해당하는 위치)에 card버튼이 들어가도록 한다.
-        for x in range(self.line):
-            for y in range(self.line):
-                self.cardLayout.addWidget(self.card.board[x][y], x, y)
+                self.cardLayout.addWidget(self.card.board[x][y], x, y)# 각각의 위치(리스트 index에 해당하는 위치)에 card버튼이 들어가도록 한다.
 
         self.cardLayout.setSpacing(0)#카드 사이의 간격을 조정한다.
         self.mainLayout.addLayout(self.cardLayout, 1, 0)#Main레이아웃에 Card레이아웃을 넣는다.
 
 
     def newStart(self):#새로운 게임을 시작할 수 있도록 한다.
-
         self.cardButton()#새로운 cardButton을 설정할 수 있다.
 
     def buttonClicked(self):
@@ -119,7 +108,6 @@ class CardGame(QWidget):
         # Yes버튼을 누르면 새로운 게임을 시작할 수 있도록 한다.
         if reply == QMessageBox.Yes:
             self.newStart()
-
         # No버튼을 누르면 게임이 끝나도록 한다.
         else:
             self.close()
@@ -127,7 +115,6 @@ class CardGame(QWidget):
 if __name__ == '__main__':
 
     import sys
-
     app = QApplication(sys.argv)
     game = CardGame()
     game.show()
