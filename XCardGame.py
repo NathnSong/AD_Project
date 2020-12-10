@@ -67,12 +67,13 @@ class CardGame(QWidget):
         self.number_count = 0
         self.card = Card(self.line)
 
+        for i in range(self.line):
+            print(self.card.board[i])
+
         for x in range(self.line):
             for y in range(self.line):
-                if x == self.line-1 or y == self.line-1: #가로끝, 세로끝인 경우에는 리스트안의 값 그대로 버튼을 설정
-                    self.card.board[x][y] = Button(str(self.card.board[x][y]), self.buttonClicked)
-                elif x != self.line-1 and y != self.line-1: #가로끝, 세로끝이 '아닌' 경우에는 리스트의 index를 포함한 card이름을 새롭게 설정
-                    self.card.board[x][y] = Button(str(self.card.board[x][y]), self.buttonClicked)
+                self.card.board[x][y] = Button(str(self.card.board[x][y]), self.buttonClicked)
+                if x != self.line-1 and y != self.line-1: #가로끝, 세로끝이 '아닌' 경우에는 리스트의 index를 포함한 card이름을 새롭게 설정
                     self.card.board[x][y].setText("card"+ str(x) + str(y))
 
         self.cardLayout = QGridLayout()
@@ -87,6 +88,7 @@ class CardGame(QWidget):
 
 
     def newStart(self):#새로운 게임을 시작할 수 있도록 한다.
+
         self.cardButton()#새로운 cardButton을 설정할 수 있다.
 
     def buttonClicked(self):
@@ -97,11 +99,10 @@ class CardGame(QWidget):
         for x in range(self.line):
             for y in range(self.line):
                 if key == "card"+ str(x) + str(y):#클릭한 카드를 찾는다.
+                    self.card.board[x][y].setText(self.card.secretcard[x][y])
                     if self.card.secretcard[x][y] == 'x':#클릭한 카드가 'x'카드일 경우에 해당
-                        self.card.board[x][y].setText(self.card.secretcard[x][y])
                         self.GameOverMessage('Fail!')#실패했다는 메세지창을 띄운다.
                     else: #클릭한 카드가 숫자카드일 경우에 해당
-                        self.card.board[x][y].setText(self.card.secretcard[x][y])
                         self.number_count += 1
 
         # 현재 뒤집은 숫자카드의 개수가 총 숫자카드 개수와 같을 경우 성공했다는 메세지창 띄운다.
@@ -122,7 +123,6 @@ class CardGame(QWidget):
         # No버튼을 누르면 게임이 끝나도록 한다.
         else:
             self.close()
-
 
 if __name__ == '__main__':
 
